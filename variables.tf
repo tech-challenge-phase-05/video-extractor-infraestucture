@@ -40,18 +40,6 @@ variable "min_size" {
   default     = 1
 }
 
-variable "lambda_name" {
-  description = "Nome da lambda de autorização do api gateway "
-}
-
-variable "load_balancer_order_payment" {
-  description = "Url do loadBalancer da aplicação order payment"
-}
-
-variable "load_balancer_order" {
-  description = "Url do loadBalancer da aplicação order payment"
-}
-
-variable "load_balancer_product" {
-  description = "Url do loadBalancer da aplicação order payment"
+variable "load_balancer" {
+  description = "Url do loadBalancer da video extractor"
 }

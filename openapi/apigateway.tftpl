@@ -37,7 +37,7 @@
         "x-amazon-apigateway-integration": {
           "type": "http_proxy",
           "httpMethod": "PUT",
-          "uri": "http://${load_balancer_product}:8080/video/client/{clientId}/upload/url",
+          "uri": "http://${load_balancer}:8080/video/client/{clientId}/upload/url",
           "payloadFormatVersion": "1.0",
           "passthroughBehavior": "when_no_match"
         },
@@ -80,7 +80,7 @@
         "x-amazon-apigateway-integration": {
           "type": "http_proxy",
           "httpMethod": "PUT",
-          "uri": "http://${load_balancer_product}:8080/video/client/{clientId}/status",
+          "uri": "http://${load_balancer}:8080/video/client/{clientId}/status",
           "payloadFormatVersion": "1.0",
           "passthroughBehavior": "when_no_match"
         },
