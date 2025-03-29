@@ -7,7 +7,7 @@ locals {
   )
 }
 
-resource "aws_api_gateway_rest_api" "apigateway_lanchonete" {
+resource "aws_api_gateway_rest_api" "apigateway_video_extractor" {
   body = local.openapi_file
   name = "apigatway-video-extractor"
 }
