@@ -1,0 +1,194 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "paths": {
+    "/video/client/{clientId}/upload/url": {
+      "post": {
+        "tags": [
+          "video-extractor-controller"
+        ],
+        "operationId": "generateUrl",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Client unique identifier attribute"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresignedUrl"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "PUT",
+          "uri": "http://${load_balancer_product}:8080/video/client/{clientId}/upload/url",
+          "payloadFormatVersion": "1.0",
+          "passthroughBehavior": "when_no_match"
+        },
+        "security": [
+          {
+            "cognito-pool": []
+          }
+        ]
+      }
+    },
+    "/video/client/{clientId}/status": {
+      "post": {
+        "tags": [
+          "video-extractor-controller"
+        ],
+        "operationId": "getVideoStatus",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Client unique identifier attribute"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideosList"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "PUT",
+          "uri": "http://${load_balancer_product}:8080/video/client/{clientId}/status",
+          "payloadFormatVersion": "1.0",
+          "passthroughBehavior": "when_no_match"
+        },
+        "security": [
+          {
+            "cognito-pool": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "cognito-pool": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "x-amazon-apigateway-authtype": "cognito_user_pools",
+        "x-amazon-apigateway-authorizer": {
+          "type": "cognito_user_pools",
+          "providerARNs": [
+            "${cognito_arn}"
+          ]
+        }
+      }
+    },
+    "schemas": {
+      "VideosList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/VideoProcessingTask"
+        }
+      },
+      "VideoProcessingTask": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "originalVideo": {
+            "$ref": "#/components/schemas/Video"
+          },
+          "processedFrame": {
+            "$ref": "#/components/schemas/Frame"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "PROCESSING",
+              "FINISHED",
+              "ERROR"
+            ]
+          }
+        }
+      },
+      "Video": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "fileName": {
+            "type": "string"
+          }
+        }
+      },
+      "Frame": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "startTime": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "endTime": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PresignedUrl": {
+        "type": "object",
+        "properties": {
+          "presignedUrl": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
