@@ -13,7 +13,7 @@ resource "aws_api_gateway_rest_api" "apigateway_video_extractor" {
 }
 
 resource "aws_api_gateway_deployment" "deployment" {
-  rest_api_id = aws_api_gateway_rest_api.apigatway-video-extractor.id
+  rest_api_id = aws_api_gateway_rest_api.apigateway_video_extractor.id
 
   triggers = {
     redeployment = sha1(local.openapi_file)
@@ -25,7 +25,7 @@ resource "aws_api_gateway_deployment" "deployment" {
 }
 
 resource "aws_api_gateway_stage" "prod" {
-  deployment_id = aws_api_gateway_deployment.deployment.id
-  rest_api_id   = aws_api_gateway_rest_api.apigatway-video-extractor.id
+ deployment_id = aws_api_gateway_deployment.deployment.id
+  rest_api_id   = aws_api_gateway_rest_api.apigateway_video_extractor.id
   stage_name    = "prod"
 }
